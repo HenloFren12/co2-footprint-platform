@@ -1,0 +1,135 @@
+/* ============================================================
+   insights.module.css — Insights Route
+   ============================================================ */
+
+/* ── Container ───────────────────────────────────────────── */
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-lg) var(--space-3xl) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+}
+
+/* ── Hero ────────────────────────────────────────────────── */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.heroTitle {
+  font-family: var(--font-display);
+  font-size: 44px;
+  color: #f0f0eb;
+  margin: 0;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.80);
+  line-height: 1.1;
+}
+
+.heroSubtitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: #a8b89e;
+  margin: 0;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.80);
+}
+
+/* ── Ancestry Cards ──────────────────────────────────────── */
+.cardsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg); /* 24px via tokens */
+}
+
+.ancestryCard {
+  position: relative;
+  background: var(--panel-t1-bg);
+  backdrop-filter: var(--panel-t1-blur);
+  -webkit-backdrop-filter: var(--panel-t1-blur);
+  border: var(--panel-border);
+  border-radius: var(--panel-t1-radius);
+  box-shadow: var(--panel-shadow);
+  padding: var(--space-xl) var(--space-2xl);
+  overflow: hidden;
+}
+
+/* Distinctive 3px solid lime vertical bar on the left edge */
+.accentBar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: #a8e045;
+  border-top-left-radius: var(--panel-t1-radius);
+  border-bottom-left-radius: var(--panel-t1-radius);
+}
+
+.cardHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  margin-bottom: var(--space-lg);
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-eyebrow);
+  font-weight: var(--text-eyebrow-weight);
+  letter-spacing: var(--text-eyebrow-ls);
+  text-transform: uppercase;
+  color: #a8e045; /* Eyebrow uses accent color here */
+  margin: 0;
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: #f0f0eb;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.statsRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.totalKg {
+  font-family: var(--font-display);
+  font-size: 48px;
+  color: #a8e045;
+  line-height: 1;
+  margin: 0;
+}
+
+.unit {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: #a8b89e;
+  margin: 0;
+}
+
+.narrative {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: #a8b89e;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 36px;
+  }
+  
+  .ancestryCard {
+    padding: var(--space-lg) var(--space-xl);
+  }
+}

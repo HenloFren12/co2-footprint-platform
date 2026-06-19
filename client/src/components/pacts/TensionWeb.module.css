@@ -1,0 +1,26 @@
+.tensionWeb {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  display: block;
+}
+
+.tensionWebNode {
+  transition:
+    cx 800ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    cy 800ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nodeHealthyGlow {
+  animation: healthyGlow 2.5s ease-in-out infinite;
+}
+
+@keyframes healthyGlow {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.5; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tensionWebNode { transition: none; }
+  .nodeHealthyGlow { animation: none; }
+}

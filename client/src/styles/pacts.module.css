@@ -1,0 +1,192 @@
+/* ============================================================
+   pacts.module.css — Forest / Pacts Route
+   ============================================================ */
+
+/* ── Page container ──────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  padding-bottom: var(--space-2xl);
+}
+
+/* ── Hero text directly on photo ─────────────────────────── */
+.hero {
+  margin-top: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.heroTitle {
+  font-family: var(--font-display);
+  font-size: 64px;
+  color: #f0f0eb;
+  margin: 0;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.80);
+  line-height: 1;
+}
+
+.heroSubtitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: #a8b89e;
+  margin: 0;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.80);
+}
+
+/* ── Invite Section ──────────────────────────────────────── */
+.inviteSection {
+  background: var(--panel-t1-bg);
+  backdrop-filter: var(--panel-t1-blur);
+  -webkit-backdrop-filter: var(--panel-t1-blur);
+  border: var(--panel-border);
+  border-radius: var(--panel-t1-radius);
+  box-shadow: var(--panel-shadow);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: calc(var(--space-md) * -1); /* Pull slightly closer to pact dash */
+}
+
+.inviteEyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-eyebrow);
+  font-weight: var(--text-eyebrow-weight);
+  letter-spacing: var(--text-eyebrow-ls);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.inviteRow {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.inviteInput {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--text-primary);
+  font-family: var(--font-mono, monospace);
+  font-size: 14px;
+  outline: none;
+}
+
+.inviteInput:read-only {
+  color: var(--text-secondary);
+}
+
+.inviteInput:not(:placeholder-shown) {
+  color: var(--text-accent);
+}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btnPrimary {
+  background: linear-gradient(135deg, #d4f536 0%, #a8e045 55%, #8bc034 100%);
+  color: #1a2a0a;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 28px rgba(168, 220, 50, 0.45);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  box-shadow: 0 0 40px rgba(168, 220, 50, 0.65);
+}
+
+.btnPrimary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btnGhost {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  padding: 12px 24px;
+  border-radius: 9999px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btnGhost:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+
+.btnGhost:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── PactInviteAccept (Invite UI) ────────────────────────── */
+.inviteAcceptWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 160px); /* Account for nav and footer */
+  padding: var(--space-lg);
+}
+
+.inviteAcceptCard {
+  background: var(--panel-t2-bg);
+  backdrop-filter: var(--panel-t2-blur);
+  -webkit-backdrop-filter: var(--panel-t2-blur);
+  border: var(--panel-border);
+  border-radius: var(--panel-t2-radius);
+  box-shadow: var(--panel-shadow);
+  padding: var(--space-2xl);
+  text-align: center;
+  max-width: 480px;
+  width: 100%;
+}
+
+.inviteAcceptTitle {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--text-primary);
+  margin: 0 0 var(--space-xl) 0;
+  line-height: 1.2;
+}
+
+.inviteAcceptActions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 48px;
+  }
+  
+  .inviteRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .btnPrimary, .btnGhost {
+    width: 100%;
+  }
+}

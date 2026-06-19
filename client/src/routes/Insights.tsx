@@ -1,0 +1,119 @@
+import { useMemo } from 'react';
+import Layout from '../components/shared/Layout';
+import { useEmissionsStore } from '../store/index';
+import styles from '../styles/insights.module.css';
+
+/* ── Narrative Map ───────────────────────────────────────── */
+// Keys mapped to match valid emissionFactors.json keys
+const ANCESTRY_NARRATIVES: Record<
+  string,
+  { eyebrow: string; heading: string; narrative: string }
+> = {
+  car_petrol_medium_km: {
+    eyebrow: 'TRANSPORT FOOTPRINT',
+    heading: 'Your Daily Commute',
+    narrative:
+      'Your petrol car burns fuel refined from crude oil extracted thousands of miles away. The extraction, shipping, refining, and combustion chain produces over 0.192kg of CO2 per kilometer — before accounting for manufacturing the vehicle itself. Switching to public transit just twice a week reduces this category by up to 40%.',
+  },
+  beef_herd_kg: {
+    eyebrow: 'DIETARY IMPACT',
+    heading: 'Your Food Choices',
+    narrative:
+      'Beef production requires 20 times more land and produces 20 times more greenhouse gases than plant proteins per gram of protein. The methane from cattle digestion alone accounts for 14.5% of all global emissions. One meal swap per week from beef to lentils saves 27kg CO2 — equivalent to driving 140km.',
+  },
+  electricity_kwh_IN: {
+    eyebrow: 'HOME ENERGY USE',
+    heading: 'Your Electricity Consumption',
+    narrative:
+      "India's electricity grid is powered 70% by coal — one of the most carbon-intensive energy sources. Every kilowatt-hour you consume produces approximately 0.82kg of CO2 at the source. Air conditioning and water heating are the largest contributors. Shifting heavy appliance use to night hours and investing in ceiling fans can cut this category by 30%.",
+  },
+  flight_domestic_km: {
+    eyebrow: 'AIR TRAVEL',
+    heading: 'Your Domestic Flights',
+    narrative:
+      'Aviation emissions occur at altitude where they cause additional warming beyond CO2 alone. A domestic flight produces 0.255kg CO2 per kilometer — roughly 5x the emissions of the equivalent train journey. The Vande Bharat Express network now covers most major domestic routes in under 8 hours.',
+  },
+  chicken_poultry_kg: {
+    eyebrow: 'DIETARY IMPACT',
+    heading: 'Your Poultry Consumption',
+    narrative:
+      'Chicken produces significantly less emissions than beef but still requires land, water, and feed — all of which carry embedded carbon. At 6.9kg CO2 per kg of chicken, shifting two meals per week to legumes saves approximately 400kg CO2 per year.',
+  },
+};
+
+/* ── Component ───────────────────────────────────────────── */
+export default function Insights() {
+  const activityLog = useEmissionsStore((s) => s.activityLog);
+
+  /* ── Derive Top 3 Emission Types ───────────────────────── */
+  const { topTypes, totals } = useMemo(() => {
+    if (activityLog.length === 0) {
+      return {
+        topTypes: ['car_petrol_medium_km', 'beef_herd_kg', 'electricity_kwh_IN'],
+        totals: {} as Record<string, number>,
+      };
+    }
+
+    const calculatedTotals: Record<string, number> = {};
+    activityLog.forEach((a) => {
+      calculatedTotals[a.activityType] =
+        (calculatedTotals[a.activityType] ?? 0) + a.emissionKg;
+    });
+
+    const sortedTypes = Object.entries(calculatedTotals)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([type]) => type);
+
+    return { topTypes: sortedTypes, totals: calculatedTotals };
+  }, [activityLog]);
+
+  return (
+    <Layout backgroundImage="/backgrounds/lichen-bark.jpg">
+      <main className={styles.container} aria-label="Emissions ancestry">
+        {/* ── Hero ────────────────────────────────────────── */}
+        <header className={styles.hero}>
+          <h1 className={styles.heroTitle}>Where Your Carbon Begins.</h1>
+          <p className={styles.heroSubtitle}>
+            The origin story behind your top emissions.
+          </p>
+        </header>
+
+        {/* ── Ancestry Cards List ─────────────────────────── */}
+        <div className={styles.cardsList}>
+          {topTypes.map((type) => {
+            const data = ANCESTRY_NARRATIVES[type];
+            if (!data) return null; // Fallback if unexpected type is logged without a narrative
+
+            // Use 0 if no data (e.g., empty state)
+            const kgTotal = totals[type] ?? 0;
+
+            return (
+              <article
+                key={type}
+                className={styles.ancestryCard}
+                aria-label={data.heading}
+              >
+                <div className={styles.accentBar} />
+                
+                <header className={styles.cardHeader}>
+                  <p className={styles.eyebrow}>{data.eyebrow}</p>
+                  <h2 className={styles.cardTitle}>{data.heading}</h2>
+                </header>
+
+                <div className={styles.statsRow}>
+                  <p className={styles.totalKg}>
+                    {kgTotal.toLocaleString(undefined, { maximumFractionDigits: 1 })}
+                  </p>
+                  <p className={styles.unit}>kg CO₂</p>
+                </div>
+
+                <p className={styles.narrative}>{data.narrative}</p>
+              </article>
+            );
+          })}
+        </div>
+      </main>
+    </Layout>
+  );
+}

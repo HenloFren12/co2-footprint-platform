@@ -1,0 +1,142 @@
+.pill {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+  padding: 10px 10px 10px var(--space-lg);
+  background: var(--nav-bg);
+  border: 1px solid var(--nav-border);
+  backdrop-filter: var(--nav-blur);
+  -webkit-backdrop-filter: var(--nav-blur);
+  border-radius: var(--nav-radius);
+  box-shadow: var(--panel-shadow);
+  max-width: calc(100vw - 32px);
+}
+
+/* ── Logo ─────────────────────────────────────────── */
+.logo {
+  font-family: var(--font-display);
+  font-size: var(--text-logo-nav);
+  color: var(--text-primary);
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  user-select: none;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+/* ── Nav Links Group ──────────────────────────────── */
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.navLink {
+  font-family: var(--font-body);
+  font-size: var(--text-nav);
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+  position: relative;
+  padding: 4px 0;
+}
+
+.navLink:hover {
+  color: var(--text-primary);
+}
+
+.navLinkActive {
+  color: var(--text-accent);
+}
+
+.navLinkActive::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text-accent);
+}
+
+/* ── CTA Button ───────────────────────────────────── */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  background: var(--btn-primary-fill);
+  color: var(--btn-primary-text);
+  font-family: var(--font-body);
+  font-size: var(--text-button);
+  font-weight: var(--text-button-weight);
+  border-radius: var(--nav-radius);
+  box-shadow: var(--btn-primary-glow);
+  transition:
+    box-shadow var(--transition-base),
+    transform var(--transition-fast);
+  white-space: nowrap;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.cta:hover {
+  box-shadow: var(--btn-primary-glow-hover);
+  transform: translateY(-1px);
+}
+
+.cta:active {
+  transform: translateY(0);
+}
+
+/* ── Mobile Responsive ────────────────────────────── */
+@media (max-width: 768px) {
+  .pill {
+    gap: var(--space-md);
+    padding: 8px 8px 8px var(--space-md);
+  }
+
+  .links {
+    gap: var(--space-md);
+  }
+
+  .navLink {
+    font-size: 13px;
+  }
+
+  .cta {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pill {
+    gap: var(--space-sm);
+    padding: 6px 6px 6px var(--space-md);
+  }
+
+  .links {
+    gap: var(--space-sm);
+  }
+
+  .logo {
+    font-size: 17px;
+  }
+
+  .navLink {
+    font-size: 12px;
+  }
+
+  .cta {
+    padding: 7px 14px;
+    font-size: 12px;
+  }
+}

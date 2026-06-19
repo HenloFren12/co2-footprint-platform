@@ -1,0 +1,118 @@
+/* ============================================================
+   tokens.css — footprint. Design System Custom Properties
+   ============================================================ */
+
+:root {
+  /* ── Fonts ─────────────────────────────────────────────── */
+  --font-display: "DM Serif Display", Georgia, serif;
+  --font-body: "DM Sans", "Inter", system-ui, sans-serif;
+
+  /* ── Background & Overlay ──────────────────────────────── */
+  --bg-base: #060a04;
+  --bg-overlay: rgba(6, 10, 4, 0.42);
+
+  /* ── Panel Tier 1 — opaque (stat cards, portrait cards) ── */
+  --panel-t1-bg: rgba(18, 24, 14, 0.88);
+  --panel-t1-blur: blur(6px);
+  --panel-t1-radius: 20px;
+
+  /* ── Panel Tier 2 — glass (forms, tension web) ─────────── */
+  --panel-t2-bg: rgba(20, 28, 16, 0.60);
+  --panel-t2-blur: blur(20px);
+  --panel-t2-radius: 22px;
+
+  /* ── Panel shared ──────────────────────────────────────── */
+  --panel-border: 1px solid rgba(255, 255, 255, 0.08);
+  --panel-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+
+  /* ── Nav Pill ──────────────────────────────────────────── */
+  --nav-bg: rgba(18, 22, 14, 0.92);
+  --nav-border: rgba(255, 255, 255, 0.12);
+  --nav-blur: blur(10px);
+  --nav-radius: 9999px;
+
+  /* ── Primary Button (Lime CTA) ─────────────────────────── */
+  --btn-primary-fill: linear-gradient(135deg, #d4f536 0%, #a8e045 55%, #8bc034 100%);
+  --btn-primary-text: #1a2a0a;
+  --btn-primary-glow: 0 0 28px rgba(168, 220, 50, 0.45), 0 0 10px rgba(168, 220, 50, 0.25);
+  --btn-primary-glow-hover: 0 0 40px rgba(168, 220, 50, 0.65), 0 0 16px rgba(168, 220, 50, 0.40);
+
+  /* ── Ghost Button ──────────────────────────────────────── */
+  --btn-ghost-bg: transparent;
+  --btn-ghost-border: rgba(255, 255, 255, 0.15);
+  --btn-ghost-color: #a8b89e;
+  --btn-ghost-radius: 9999px;
+
+  /* ── Text Colors ───────────────────────────────────────── */
+  --text-primary: #f0f0eb;
+  --text-secondary: #a8b89e;
+  --text-ghost: #6a7862;
+  --text-accent: #a8e045;
+
+  /* ── Input Fields ──────────────────────────────────────── */
+  --input-bg: rgba(30, 38, 22, 0.65);
+  --input-border: rgba(255, 255, 255, 0.10);
+  --input-border-focus: rgba(168, 224, 69, 0.50);
+
+  /* ── Chips ─────────────────────────────────────────────── */
+  --chip-bg: rgba(255, 255, 255, 0.10);
+  --chip-border: rgba(255, 255, 255, 0.12);
+
+  /* ── Progress ──────────────────────────────────────────── */
+  --progress-track: rgba(255, 255, 255, 0.10);
+  --progress-fill: #a8e045;
+
+  /* ── Typography Sizes ──────────────────────────────────── */
+  --text-hero: 72px;
+  --text-hero-ls: -0.02em;
+  --text-hero-lh: 1.10;
+
+  --text-card-heading: 32px;
+  --text-card-heading-ls: -0.01em;
+
+  --text-stat: 64px;
+  --text-stat-ls: -0.03em;
+
+  --text-body: 15px;
+  --text-body-lh: 1.65;
+
+  --text-eyebrow: 10px;
+  --text-eyebrow-weight: 500;
+  --text-eyebrow-ls: 0.10em;
+
+  --text-button: 15px;
+  --text-button-weight: 600;
+
+  --text-nav: 14px;
+
+  --text-logo: 28px;
+  --text-logo-nav: 20px;
+  --text-logo-footer: 24px;
+
+  /* ── Spacing Scale ─────────────────────────────────────── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 96px;
+
+  /* ── Borders (reusable tokens) ─────────────────────────── */
+  --border-subtle: 1px solid rgba(255, 255, 255, 0.08);
+  --border-light: 1px solid rgba(255, 255, 255, 0.12);
+  --border-ghost: 1px solid rgba(255, 255, 255, 0.15);
+
+  /* ── Transitions ───────────────────────────────────────── */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  /* ── Z-Index Layers ────────────────────────────────────── */
+  --z-bg: -1;
+  --z-content: 1;
+  --z-nav: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+}

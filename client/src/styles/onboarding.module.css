@@ -1,0 +1,202 @@
+.onboardingWrapper :global(nav[aria-label="Main navigation"]) {
+  display: none !important;
+}
+
+.progressBarContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  z-index: 1000;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: var(--progress-fill);
+  transition: width var(--transition-slow);
+}
+
+.logo {
+  position: fixed;
+  top: var(--space-xl);
+  left: var(--space-xl);
+  font-family: var(--font-display);
+  font-size: var(--text-logo);
+  color: var(--text-primary);
+  z-index: 1000;
+  letter-spacing: -0.01em;
+  user-select: none;
+}
+
+.contentArea {
+  display: flex;
+  align-items: center;
+  padding-left: 10vw;
+  min-height: calc(100vh - 100px); /* Account for Layout padding */
+}
+
+@media (max-width: 768px) {
+  .contentArea {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+    justify-content: center;
+  }
+  .logo {
+    top: var(--space-md);
+    left: var(--space-md);
+  }
+}
+
+.sliderWindow {
+  width: 500px;
+  max-width: 100vw;
+  padding: 20px;
+  margin: -20px;
+  overflow: hidden;
+}
+
+.sliderStrip {
+  display: flex;
+  width: 500%;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sliderStrip {
+    transition: none;
+  }
+}
+
+.slide {
+  width: 20%;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  width: 460px;
+  max-width: calc(100vw - 40px);
+  background: var(--panel-t1-bg);
+  backdrop-filter: var(--panel-t1-blur);
+  border-radius: var(--panel-t1-radius);
+  border: var(--panel-border);
+  box-shadow: var(--panel-shadow);
+  padding: var(--space-2xl);
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: var(--space-xl);
+  }
+}
+
+.heroHeading {
+  font-family: var(--font-display);
+  font-size: var(--text-hero);
+  letter-spacing: var(--text-hero-ls);
+  line-height: var(--text-hero-lh);
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.bodyText {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--text-body-lh);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2xl);
+}
+
+@media (max-width: 768px) {
+  .heroHeading {
+    font-size: 48px;
+  }
+}
+
+.eyebrow {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--text-eyebrow);
+  font-weight: var(--text-eyebrow-weight);
+  letter-spacing: var(--text-eyebrow-ls);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+
+.cardHeading {
+  font-family: var(--font-display);
+  font-size: var(--text-card-heading);
+  letter-spacing: var(--text-card-heading-ls);
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: var(--space-xl);
+}
+
+@media (max-width: 768px) {
+  .cardHeading {
+    font-size: 28px;
+  }
+}
+
+.optionsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-2xl);
+}
+
+.chip {
+  background: rgba(30, 38, 22, 0.80);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: #f0f0eb;
+  text-align: left;
+  transition: all var(--transition-fast);
+}
+
+.chip:hover {
+  background: rgba(40, 50, 30, 0.80);
+}
+
+.chipSelected {
+  border-color: rgba(168, 224, 69, 0.50);
+  background: rgba(168, 224, 69, 0.10);
+}
+
+.chipSelected:hover {
+  background: rgba(168, 224, 69, 0.15);
+}
+
+.primaryButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 24px;
+  background: var(--btn-primary-fill);
+  color: var(--btn-primary-text);
+  font-family: var(--font-body);
+  font-size: var(--text-button);
+  font-weight: var(--text-button-weight);
+  border-radius: var(--nav-radius);
+  box-shadow: var(--btn-primary-glow);
+  transition: box-shadow var(--transition-base), transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.primaryButton:hover:not(:disabled) {
+  box-shadow: var(--btn-primary-glow-hover);
+  transform: translateY(-1px);
+}
+
+.primaryButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}

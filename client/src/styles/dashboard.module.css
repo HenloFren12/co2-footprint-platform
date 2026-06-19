@@ -1,0 +1,232 @@
+/* ============================================================
+   dashboard.module.css — Impact Dashboard Route
+   ============================================================ */
+
+/* ── Page container ──────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* ── Two-column grid ─────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: 44% 1fr;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+/* ── Right column stack ──────────────────────────────────── */
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* ── Stat cards row ──────────────────────────────────────── */
+.statRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+}
+
+/* ── Stat card (Tier 1 opaque panel) ─────────────────────── */
+.statCard {
+  background: var(--panel-t1-bg);
+  backdrop-filter: var(--panel-t1-blur);
+  -webkit-backdrop-filter: var(--panel-t1-blur);
+  border: var(--panel-border);
+  border-radius: var(--panel-t1-radius);
+  box-shadow: var(--panel-shadow);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* Top row: icon + period chip */
+.statHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.iconCircle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.iconSvg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--text-secondary);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.periodChip {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 9999px;
+  padding: 4px 12px;
+  white-space: nowrap;
+}
+
+/* Eyebrow label */
+.statEyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-eyebrow);
+  font-weight: var(--text-eyebrow-weight);
+  letter-spacing: var(--text-eyebrow-ls);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Large stat number */
+.statNumber {
+  font-family: var(--font-display);
+  font-size: var(--text-stat);
+  letter-spacing: var(--text-stat-ls);
+  color: var(--text-accent);
+  line-height: 1;
+  margin: 0;
+}
+
+/* Sub-text under number */
+.statSub {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ── Stewardship Goal card ───────────────────────────────── */
+.goalCard {
+  background: var(--panel-t1-bg);
+  backdrop-filter: var(--panel-t1-blur);
+  -webkit-backdrop-filter: var(--panel-t1-blur);
+  border: var(--panel-border);
+  border-radius: var(--panel-t1-radius);
+  box-shadow: var(--panel-shadow);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.goalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.goalMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.goalTitle {
+  font-family: var(--font-display);
+  font-size: 28px;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.goalSubtitle {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.goalPercent {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-accent);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-top: 6px;
+}
+
+/* Progress bar */
+.progressTrack {
+  width: 100%;
+  height: 6px;
+  background: var(--progress-track);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--progress-fill);
+  border-radius: 9999px;
+  transition: width var(--transition-slow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progressFill {
+    transition: none;
+  }
+}
+
+/* Category chips row */
+.categoryChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+}
+
+.categoryChip {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+  padding: 6px 14px;
+  white-space: nowrap;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .statRow {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .statRow {
+    grid-template-columns: 1fr;
+  }
+
+  .statNumber {
+    font-size: 48px;
+  }
+
+  .container {
+    padding: 0 var(--space-md);
+  }
+}

@@ -1,0 +1,42 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bg-overlay);
+}
+
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  position: relative;
+  z-index: var(--z-content);
+  padding-top: 100px; /* clear the floating nav pill */
+  padding-bottom: var(--space-3xl);
+}
+
+/* ── Mobile: switch to scroll attachment ──────────── */
+@media (max-width: 768px) {
+  .backdrop {
+    background-attachment: scroll;
+  }
+
+  .main {
+    padding-top: 80px;
+  }
+}

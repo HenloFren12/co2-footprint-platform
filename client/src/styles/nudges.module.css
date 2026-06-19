@@ -1,0 +1,102 @@
+/* ============================================================
+   nudges.module.css — Journey / Nudges Route
+   ============================================================ */
+
+/* ── Page container ──────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* ── Two-column grid ─────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+/* ── Left column ─────────────────────────────────────────── */
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-eyebrow);
+  font-weight: var(--text-eyebrow-weight);
+  letter-spacing: var(--text-eyebrow-ls);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ── Right column ────────────────────────────────────────── */
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* ── Placeholder panel (when no nudge) ───────────────────── */
+.placeholder {
+  background: var(--panel-t1-bg);
+  backdrop-filter: var(--panel-t1-blur);
+  -webkit-backdrop-filter: var(--panel-t1-blur);
+  border: var(--panel-border);
+  border-radius: var(--panel-t1-radius);
+  box-shadow: var(--panel-shadow);
+  padding: var(--space-3xl) var(--space-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 200px;
+}
+
+.placeholderText {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  color: var(--text-secondary);
+  line-height: var(--text-body-lh);
+  margin: 0;
+  max-width: 280px;
+}
+
+/* ── NudgeCard enter animation ───────────────────────────── */
+.nudgeEnter {
+  animation: nudgeFadeIn 280ms ease-out forwards;
+}
+
+@keyframes nudgeFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nudgeEnter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .container {
+    padding: 0 var(--space-md);
+  }
+}

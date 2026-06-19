@@ -1,0 +1,112 @@
+/* components/shared/EmissionLogForm.module.css */
+
+.formWrapper {
+  background: rgba(20, 28, 16, 0.60);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.select {
+  background: rgba(30, 38, 22, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-primary);
+  width: 100%;
+  cursor: pointer;
+  transition: border-color 200ms ease;
+  appearance: none;
+}
+
+.select:focus {
+  outline: none;
+  border-color: rgba(168, 224, 69, 0.50);
+  box-shadow: 0 0 0 3px rgba(168, 224, 69, 0.10);
+}
+
+.input {
+  background: rgba(30, 38, 22, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-primary);
+  width: 100%;
+  transition: border-color 200ms ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgba(168, 224, 69, 0.50);
+  box-shadow: 0 0 0 3px rgba(168, 224, 69, 0.10);
+}
+
+.input::placeholder {
+  color: var(--text-ghost);
+}
+
+.error {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: #f87171;
+  margin: 0;
+  padding: 10px 14px;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.20);
+  border-radius: 8px;
+}
+
+.submitButton {
+  background: linear-gradient(
+    135deg,
+    #d4f536 0%,
+    #a8e045 55%,
+    #8bc034 100%
+  );
+  color: #1a2a0a;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 0 28px rgba(168, 220, 50, 0.45),
+              0 0 10px rgba(168, 220, 50, 0.25);
+  transition: box-shadow 200ms ease;
+}
+
+.submitButton:hover {
+  box-shadow: 0 0 40px rgba(168, 220, 50, 0.65),
+              0 0 16px rgba(168, 220, 50, 0.40);
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
