@@ -1,5 +1,5 @@
 // components/empathy/PersonaCard.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Persona,
   generatePersonaNarrative,

@@ -80,7 +80,7 @@ export default function Onboarding() {
         let total = 0;
         for (let i = 1; i <= 4; i++) {
           const activity = STEPS[i]!.activityType;
-          total += calculateEmission(activity, newAnswers[i]);
+          total += calculateEmission(activity, newAnswers[i] || 0);
         }
         setBaselineFootprintKg(total);
         setOnboardingComplete(true);

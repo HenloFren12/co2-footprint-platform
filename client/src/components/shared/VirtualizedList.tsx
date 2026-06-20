@@ -34,7 +34,7 @@ export default function VirtualizedList<T>({
               width: '100%',
             }}
           >
-            {renderItem(items[virtualItem.index], virtualItem.index)}
+            {renderItem(items[virtualItem.index]!, virtualItem.index)}
           </div>
         ))}
       </div>

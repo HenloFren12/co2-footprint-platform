@@ -1,5 +1,5 @@
 // components/pacts/PactDashboard.tsx
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { usePactsStore, useUserStore } from '../../store/index';
 import { calculateTrustScore } from '../../lib/trustScore';
 import TensionWeb from './TensionWeb';

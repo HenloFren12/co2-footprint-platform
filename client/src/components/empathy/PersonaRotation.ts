@@ -3,10 +3,12 @@
 const PERSONA_IDS = ['arjun', 'amara', 'lena', 'ibrahim', 'mei', 'sofia', 'tariq', 'hana'];
 
 export function getPersonaForWeek(userId: string, isoWeekNumber: number): string {
-  // Combine user ID hash with week number for a stable, user-unique rotation
-  const userSeed = userId.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-  const index = (userSeed + isoWeekNumber) % PERSONA_IDS.length;
-  return PERSONA_IDS[index];
+  const safeUserId = userId || '';
+  const userSeed = safeUserId.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  const index = Math.abs(userSeed + isoWeekNumber) % (PERSONA_IDS.length || 1);
+  
+  // The '!' guarantees to TypeScript that this will always be a string, not undefined
+  return PERSONA_IDS[index]! || PERSONA_IDS[0]!;
 }
 
 export function getISOWeekNumber(date: Date): number {

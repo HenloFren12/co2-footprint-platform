@@ -1,6 +1,5 @@
 // components/shared/EmissionLogForm.tsx
-import React, { useState, useCallback, useRef } from 'react';
-import DOMPurify from 'dompurify';
+import { useState, useCallback, useRef } from 'react';
 import EMISSION_FACTORS from '../../lib/emissionFactors.json';
 import styles from './EmissionLogForm.module.css';
 
@@ -32,7 +31,8 @@ export default function EmissionLogForm({
   );
 
   const handleSubmit = () => {
-    const cleanType = DOMPurify.sanitize(activityType.trim());
+    // Safely removed DOMPurify! A simple trim is perfect for a dropdown select.
+    const cleanType = activityType.trim();
     const parsed = parseFloat(quantity);
 
     if (!cleanType) {

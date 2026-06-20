@@ -9,13 +9,49 @@ import styles from '../styles/pacts.module.css';
 function PactInviteAccept({ inviteToken }: { inviteToken: string }) {
   const navigate = useNavigate();
   const [isJoining, setIsJoining] = useState(false);
+  const addPact = usePactsStore((s) => s.addPact);
+  const pacts = usePactsStore((s) => s.pacts);
+  const currentUserId = useUserStore((s) => s.userId);
 
-  const joinPact = async (token: string) => {
+  const joinPact = async (_token: string) => {
     setIsJoining(true);
-    // TODO: Supabase integration - call join pact RPC with token
+    
+    // Simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
+    
+    const mockNames = ['Alex', 'Sam', 'Jordan', 'Taylor', 'Casey'];
+    // The fallback || 'Alex' guarantees randomName is ALWAYS a string
+    const randomName = mockNames[Math.floor(Math.random() * mockNames.length)] || 'Alex';
+    const newMemberId = `user_${Math.random().toString(36).substring(2, 9)}`;
+
+    // We check if a pact already exists to simulate adding to it
+    const existingPact = pacts.find(p => p.status === 'active');
+    
+    if (existingPact) {
+      addPact({
+        ...existingPact,
+        id: `pact_${Math.random()}`, // Unique ID for React keys
+        memberIds: [...existingPact.memberIds, newMemberId],
+        members: [...existingPact.members, { id: newMemberId, name: randomName }],
+        trustScores: { ...existingPact.trustScores, [newMemberId]: Math.floor(Math.random() * 30) + 70 },
+      });
+    } else {
+      addPact({
+        id: `pact_${_token}`,
+        name: 'Shared Carbon Pact',
+        commitment: 'Reduce weekly emissions together',
+        memberIds: [currentUserId, newMemberId],
+        members: [
+          { id: currentUserId, name: 'You' },
+          { id: newMemberId, name: randomName }
+        ],
+        trustScores: { [currentUserId]: 100, [newMemberId]: 85 },
+        status: 'active',
+      });
+    }
+
     setIsJoining(false);
-    navigate('/pacts');
+    navigate('/pacts'); // Reloads the view without the token
   };
 
   return (
@@ -54,7 +90,9 @@ export default function Pacts() {
   
   const pacts = usePactsStore((s) => s.pacts);
   const currentUserId = useUserStore((s) => s.userId);
-  const activePact = pacts.find(
+  
+  // Get the MOST RECENT active pact for the simulation
+  const activePact = [...pacts].reverse().find(
     (p) => p.memberIds.includes(currentUserId) && p.status === 'active'
   );
 
@@ -67,7 +105,7 @@ export default function Pacts() {
     setIsGenerating(true);
     
     try {
-      // Mock API call: POST /api/pacts/${activePact.id}/invite
+      // Mock API call for the MVP
       await new Promise((resolve) => setTimeout(resolve, 800));
       const mockToken = Math.random().toString(36).substring(2, 10);
       const url = `${window.location.origin}/pacts?token=${mockToken}`;
