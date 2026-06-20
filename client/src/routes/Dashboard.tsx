@@ -13,6 +13,7 @@ const CATEGORIES = ['Transport', 'Energy', 'Diet'] as const;
 export default function Dashboard() {
   /* ── Store data ──────────────────────────────────────── */
   const userId = useUserStore((s) => s.userId);
+  const baselineFootprintKg = useUserStore((s) => s.baselineFootprintKg);
   const totalFootprintKg = useEmissionsStore((s) => s.totalFootprintKg);
   const topEmissionType = useEmissionsStore((s) => s.topEmissionType);
   const currentPersonaId = usePersonaStore((s) => s.currentPersonaId);
@@ -39,10 +40,26 @@ export default function Dashboard() {
     [totalFootprintKg]
   );
 
-  const goalProgress = useMemo(
-    () => Math.min((totalFootprintKg / 500) * 100, 100),
-    [totalFootprintKg]
-  );
+  /* ── FIX: Stewardship Goal — was backwards before.
+     Previously: Math.min((totalFootprintKg / 500) * 100, 100)
+     This meant LOGGING MORE EMISSIONS increased your "progress" —
+     the opposite of what a carbon REDUCTION goal should reward.
+
+     Corrected logic: compare current footprint against your own
+     onboarding baseline. Staying under baseline = good = higher %.
+     Exceeding baseline = 0% (no reduction achieved yet).
+
+     If no baseline was ever set (baselineFootprintKg is 0), fall
+     back to a neutral 0% rather than dividing by zero. */
+  const goalProgress = useMemo(() => {
+    if (!baselineFootprintKg || baselineFootprintKg <= 0) return 0;
+
+    const reductionKg = baselineFootprintKg - totalFootprintKg;
+    const reductionPercent = (reductionKg / baselineFootprintKg) * 100;
+
+    // Clamp between 0 and 100 — never show negative or over 100%
+    return Math.max(0, Math.min(reductionPercent, 100));
+  }, [baselineFootprintKg, totalFootprintKg]);
 
   /* ── Guard against missing persona ───────────────────── */
   if (!persona) return null;
@@ -64,7 +81,7 @@ export default function Dashboard() {
           <div className={styles.rightCol}>
             {/* ── Two stat cards side by side ──────────── */}
             <section className={styles.statRow} aria-label="Carbon statistics">
-              {/* Card A: Carbon Offset */}
+              {/* Card A: Carbon Logged (renamed from "Offset" — was inaccurate) */}
               <div className={styles.statCard}>
                 <div className={styles.statHeader}>
                   <div className={styles.iconCircle}>
@@ -75,7 +92,7 @@ export default function Dashboard() {
                   </div>
                   <span className={styles.periodChip}>This Month</span>
                 </div>
-                <p className={styles.statEyebrow}>CARBON OFFSET</p>
+                <p className={styles.statEyebrow}>CARBON LOGGED</p>
                 <p
                   className={styles.statNumber}
                   aria-label={`${totalFootprintKg.toFixed(1)} kilograms of CO2 this month`}
@@ -96,7 +113,7 @@ export default function Dashboard() {
                   </div>
                   <span className={styles.periodChip}>Lifetime</span>
                 </div>
-                <p className={styles.statEyebrow}>TREES PRESERVED</p>
+                <p className={styles.statEyebrow}>TREES EQUIVALENT</p>
                 <p
                   className={styles.statNumber}
                   aria-label={`${treesPreserved} mature canopy trees equivalent`}
@@ -113,7 +130,7 @@ export default function Dashboard() {
                 <div className={styles.goalMeta}>
                   <h2 className={styles.goalTitle}>Stewardship Goal</h2>
                   <p className={styles.goalSubtitle}>
-                    Your progress toward carbon neutrality.
+                    Your reduction below your starting baseline.
                   </p>
                 </div>
                 <span className={styles.goalPercent}>
@@ -127,7 +144,7 @@ export default function Dashboard() {
                 aria-valuenow={Math.round(goalProgress)}
                 aria-valuemin={0}
                 aria-valuemax={100}
-                aria-label="Carbon goal progress"
+                aria-label="Carbon reduction progress relative to your baseline"
               >
                 <div
                   className={styles.progressFill}

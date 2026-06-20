@@ -3,8 +3,7 @@ import Layout from '../components/shared/Layout';
 import { useEmissionsStore } from '../store/index';
 import styles from '../styles/insights.module.css';
 
-/* ── Narrative Map ───────────────────────────────────────── */
-// Keys mapped to match valid emissionFactors.json keys
+/* ── Narrative Map — exact-match entries for common types ──── */
 const ANCESTRY_NARRATIVES: Record<
   string,
   { eyebrow: string; heading: string; narrative: string }
@@ -40,6 +39,74 @@ const ANCESTRY_NARRATIVES: Record<
       'Chicken produces significantly less emissions than beef but still requires land, water, and feed — all of which carry embedded carbon. At 6.9kg CO2 per kg of chicken, shifting two meals per week to legumes saves approximately 400kg CO2 per year.',
   },
 };
+
+/* ── Category fallback narratives ────────────────────────────
+   FIX: Your emissionFactors.json has ~87 keys, but the exact-match
+   map above only covers 5. Any logged activity type outside those 5
+   used to return null from ANCESTRY_NARRATIVES[type] and the card
+   was skipped entirely — if all 3 of a user's top types were
+   uncovered, the WHOLE PAGE rendered blank.
+
+   This fallback groups any unmapped activity type into one of four
+   broad categories by matching keywords in the key name, so every
+   single one of the 87 types now produces a real card instead of
+   silently vanishing. */
+const CATEGORY_FALLBACKS: {
+  match: RegExp;
+  eyebrow: string;
+  heading: string;
+  narrative: string;
+}[] = [
+  {
+    match: /car|bus|train|transit|flight|bike|scooter|vehicle|km$/i,
+    eyebrow: 'TRANSPORT FOOTPRINT',
+    heading: 'Your Movement & Travel',
+    narrative:
+      'However you get from place to place leaves a trace. Fuel combustion, vehicle manufacturing, and infrastructure all carry embedded carbon. Choosing walking, cycling, or shared transit for short trips is one of the fastest ways to shrink this category.',
+  },
+  {
+    match: /beef|chicken|meat|pork|lamb|dairy|cheese|milk|egg|food|diet|herd/i,
+    eyebrow: 'DIETARY IMPACT',
+    heading: 'Your Food Choices',
+    narrative:
+      'Every meal carries a hidden carbon cost — from land use and animal feed to transport and refrigeration. Animal-based foods generally carry a heavier footprint than plant-based ones. Small substitutions, made consistently, compound into meaningful reductions over a year.',
+  },
+  {
+    match: /electricity|kwh|energy|heating|cooling|appliance|gas/i,
+    eyebrow: 'HOME ENERGY USE',
+    heading: 'Your Household Energy',
+    narrative:
+      'Power for lighting, heating, cooling, and appliances draws from a grid that is rarely 100% renewable. The exact carbon cost depends on your local energy mix. Reducing peak-hour usage and improving insulation are the most reliable ways to bring this number down.',
+  },
+  {
+    match: /shop|goods|clothing|electronics|purchase|delivery|packaging/i,
+    eyebrow: 'CONSUMPTION FOOTPRINT',
+    heading: 'Your Shopping Habits',
+    narrative:
+      'Manufacturing, packaging, and shipping every product you buy adds carbon long before it reaches you. Buying less, buying durable, and choosing local where possible all reduce this category meaningfully over time.',
+  },
+];
+
+function getNarrativeFor(type: string) {
+  if (ANCESTRY_NARRATIVES[type]) return ANCESTRY_NARRATIVES[type];
+
+  const fallback = CATEGORY_FALLBACKS.find((c) => c.match.test(type));
+  if (fallback) {
+    return {
+      eyebrow: fallback.eyebrow,
+      heading: fallback.heading,
+      narrative: fallback.narrative,
+    };
+  }
+
+  // Last-resort generic fallback — guarantees a card always renders
+  return {
+    eyebrow: 'YOUR FOOTPRINT',
+    heading: type.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+    narrative:
+      'This activity contributes to your overall carbon footprint. Every choice, tracked consistently, builds a clearer picture of where your impact comes from and where small changes can have the biggest effect.',
+  };
+}
 
 /* ── Component ───────────────────────────────────────────── */
 export default function Insights() {
@@ -82,10 +149,10 @@ export default function Insights() {
         {/* ── Ancestry Cards List ─────────────────────────── */}
         <div className={styles.cardsList}>
           {topTypes.map((type) => {
-            const data = ANCESTRY_NARRATIVES[type];
-            if (!data) return null; // Fallback if unexpected type is logged without a narrative
-
-            // Use 0 if no data (e.g., empty state)
+            // FIX: getNarrativeFor() always returns a real object now —
+            // exact match, category fallback, or generic fallback.
+            // No more `if (!data) return null` skipping cards.
+            const data = getNarrativeFor(type);
             const kgTotal = totals[type] ?? 0;
 
             return (
@@ -95,7 +162,7 @@ export default function Insights() {
                 aria-label={data.heading}
               >
                 <div className={styles.accentBar} />
-                
+
                 <header className={styles.cardHeader}>
                   <p className={styles.eyebrow}>{data.eyebrow}</p>
                   <h2 className={styles.cardTitle}>{data.heading}</h2>
@@ -103,7 +170,9 @@ export default function Insights() {
 
                 <div className={styles.statsRow}>
                   <p className={styles.totalKg}>
-                    {kgTotal.toLocaleString(undefined, { maximumFractionDigits: 1 })}
+                    {kgTotal.toLocaleString(undefined, {
+                      maximumFractionDigits: 1,
+                    })}
                   </p>
                   <p className={styles.unit}>kg CO₂</p>
                 </div>

@@ -1,0 +1,146 @@
+/* ============================================================
+   NudgeCard.module.css — Ripple Effect UI
+   Uses the same Tier 1 panel + button tokens as everywhere else.
+   ============================================================ */
+
+.card {
+  background: var(--panel-t1-bg);
+  backdrop-filter: var(--panel-t1-blur);
+  -webkit-backdrop-filter: var(--panel-t1-blur);
+  border: var(--panel-border);
+  border-radius: var(--panel-t1-radius);
+  box-shadow: var(--panel-shadow);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.message {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--text-body-lh);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.counter {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  color: var(--text-accent);
+  line-height: 1.1;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+/* ── Primary accept button — lime gradient + glow ────────── */
+.acceptButton {
+  position: relative;
+  overflow: hidden;
+  background: var(--btn-primary-fill);
+  color: var(--btn-primary-text);
+  border: none;
+  border-radius: 9999px;
+  padding: 14px 24px;
+  font-family: var(--font-body);
+  font-size: var(--text-button);
+  font-weight: var(--text-button-weight);
+  box-shadow: var(--btn-primary-glow);
+  cursor: pointer;
+  transition: box-shadow var(--transition-base), transform var(--transition-fast);
+  white-space: nowrap;
+}
+
+.acceptButton:hover:not(:disabled) {
+  box-shadow: var(--btn-primary-glow-hover);
+  transform: translateY(-1px);
+}
+
+.acceptButton:disabled,
+.acceptButton.accepted {
+  cursor: default;
+  background: rgba(168, 224, 69, 0.20);
+  color: var(--text-accent);
+  box-shadow: none;
+  transform: none;
+}
+
+/* ── Ghost dismiss button ─────────────────────────────────── */
+.dismissButton {
+  background: var(--btn-ghost-bg);
+  border: 1px solid var(--btn-ghost-border);
+  color: var(--btn-ghost-color);
+  border-radius: var(--btn-ghost-radius);
+  padding: 14px 24px;
+  font-family: var(--font-body);
+  font-size: var(--text-button);
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color var(--transition-base), color var(--transition-base);
+  white-space: nowrap;
+}
+
+.dismissButton:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.28);
+  color: var(--text-primary);
+}
+
+.dismissButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ── Ripple animation — fires on .ripple-active toggle ───── */
+/* This relies on the global .ripple-origin / .ripple-active
+   classes already defined in your global ripple.css. If those
+   are not yet global, add the block below to global.css. */
+:global(.ripple-origin) {
+  position: relative;
+  overflow: hidden;
+}
+
+:global(.ripple-origin::after) {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 240, 0.55) 0%,
+    transparent 65%
+  );
+  transform: scale(0);
+  opacity: 1;
+  transition: transform 550ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 550ms ease-out;
+  pointer-events: none;
+}
+
+:global(.ripple-origin.ripple-active::after) {
+  transform: scale(3.5);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(.ripple-origin::after) {
+    transition: none;
+  }
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .actions {
+    flex-direction: column;
+  }
+
+  .acceptButton,
+  .dismissButton {
+    width: 100%;
+  }
+}

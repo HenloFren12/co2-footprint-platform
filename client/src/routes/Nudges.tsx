@@ -8,7 +8,7 @@ import { shouldTriggerNudge } from '../lib/nudgeTrigger';
 import { useEmissionsStore, useNudgesStore } from '../store/index';
 import styles from '../styles/nudges.module.css';
 
-/* ── Nudge definitions ───────────────────────────────────── */
+/* ── Hand-written nudges for specific high-impact activities ── */
 const NUDGE_MAP: Record<string, Omit<NudgeData, 'id'>> = {
   flight_domestic_km: {
     message:
@@ -38,42 +38,58 @@ const NUDGE_MAP: Record<string, Omit<NudgeData, 'id'>> = {
 
 const EXEMPT_TYPES: string[] = [];
 
+// Below this emission threshold (kg), the activity is already low-impact —
+// it should never be scolded with "try an alternative".
+const LOW_IMPACT_THRESHOLD_KG = 1.0;
+
+function humanizeActivityType(activityType: string): string {
+  return activityType
+    .replace(/_km$|_kg$|_kwh.*$/i, '')
+    .replace(/_/g, ' ')
+    .trim();
+}
+
 /**
- * FIX: builds a generic nudge for any activity type not explicitly
- * listed in NUDGE_MAP. Previously NUDGE_MAP[activityType] ?? null
- * meant 83 of your 87 activity types silently produced no nudge at all.
- * This guarantees every activity type produces a nudge card.
+ * Builds a nudge for any activity type not in NUDGE_MAP.
+ * Returns null for genuinely low-impact activities (walking, plant-based
+ * meals, etc.) so the app never nags a user for making a good choice —
+ * it instead shows quiet positive reinforcement.
  */
-function getFallbackNudge(
+function buildFallbackNudge(
   activityType: string,
   emissionKg: number
 ): Omit<NudgeData, 'id'> {
-  const readableType = activityType
-    .replace(/_/g, ' ')
-    .replace(/\b(km|kg|kwh|in)\b/gi, (m) => m.toUpperCase());
+  const label = humanizeActivityType(activityType);
+
+  if (emissionKg < LOW_IMPACT_THRESHOLD_KG) {
+    return {
+      message: `Great choice — your ${label} activity added only ${emissionKg.toFixed(
+        1
+      )}kg CO₂. Keep it up.`,
+      alternativeLabel: 'Nice work',
+      co2SavedKg: 0,
+    };
+  }
 
   return {
-    message: `Your ${readableType} added ${emissionKg.toFixed(
+    message: `Your ${label} activity added ${emissionKg.toFixed(
       1
     )}kg CO₂. Small swaps add up over time.`,
     alternativeLabel: 'Try a lower-impact option',
-    co2SavedKg: Number((emissionKg * 0.3).toFixed(1)), // generic 30% reduction estimate
+    co2SavedKg: Number((emissionKg * 0.3).toFixed(1)),
   };
 }
 
 /* ── Component ───────────────────────────────────────────── */
 export default function Nudges() {
-  /* ── Store data ──────────────────────────────────────── */
   const addActivity = useEmissionsStore((s) => s.addActivity);
   const totalFootprintKg = useEmissionsStore((s) => s.totalFootprintKg);
   const dailyCount = useNudgesStore((s) => s.dailyCount);
   const lastResetDate = useNudgesStore((s) => s.lastResetDate);
   const incrementDailyCount = useNudgesStore((s) => s.incrementDailyCount);
 
-  /* ── Local state ─────────────────────────────────────── */
   const [activeNudge, setActiveNudge] = useState<NudgeData | null>(null);
 
-  /* ── Handle form submit ──────────────────────────────── */
   const handleActivitySubmit = useCallback(
     (activityType: string, quantity: number) => {
       const emissionKg = calculateEmission(activityType, quantity);
@@ -88,9 +104,9 @@ export default function Nudges() {
       if (
         shouldTriggerNudge(dailyCount, lastResetDate, activityType, EXEMPT_TYPES)
       ) {
-        // FIX: fall back to a generic nudge instead of null
         const nudgeTemplate =
-          NUDGE_MAP[activityType] ?? getFallbackNudge(activityType, emissionKg);
+          NUDGE_MAP[activityType] ??
+          buildFallbackNudge(activityType, emissionKg);
 
         setActiveNudge({
           ...nudgeTemplate,
@@ -102,7 +118,6 @@ export default function Nudges() {
     [addActivity, dailyCount, lastResetDate, incrementDailyCount]
   );
 
-  /* ── Handle nudge accept / dismiss ───────────────────── */
   const handleAccept = useCallback(() => {
     setActiveNudge(null);
   }, []);
@@ -115,13 +130,11 @@ export default function Nudges() {
     <Layout backgroundImage="/backgrounds/bark-texture.jpg">
       <div className={styles.container} aria-label="Log a carbon activity" role="main">
         <div className={styles.grid}>
-          {/* ═══ LEFT COLUMN — Emission Log Form ═════════ */}
           <div className={styles.leftCol}>
             <p className={styles.eyebrow}>LOG AN ACTIVITY</p>
             <EmissionLogForm onSubmit={handleActivitySubmit} />
           </div>
 
-          {/* ═══ RIGHT COLUMN — NudgeCard or Placeholder ═ */}
           <div className={styles.rightCol}>
             {activeNudge ? (
               <div className={styles.nudgeEnter} key={activeNudge.id}>
